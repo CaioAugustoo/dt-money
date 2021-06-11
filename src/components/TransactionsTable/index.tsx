@@ -1,6 +1,14 @@
+import { useEffect, useState } from "react";
+import { api } from "services/api";
 import * as S from "./styles";
 
 export const TransactionsTable = () => {
+  const [, setData] = useState([]);
+
+  useEffect(() => {
+    api.get("transactions").then(response => setData(response.data));
+  }, []);
+
   return (
     <S.Wrapper>
       <table>
@@ -12,7 +20,6 @@ export const TransactionsTable = () => {
             <th>Data</th>
           </tr>
         </thead>
-
         <tbody>
           <tr>
             <td>Desenvolvimento de website</td>
