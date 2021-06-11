@@ -1,6 +1,17 @@
+import { useEffect, useState } from "react";
 import * as S from "./styles";
 
 export const TransactionsTable = () => {
+  const [, setData] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const response = await fetch("http://localhost:3000/api/transactions");
+      const json = await response.json();
+      setData(json);
+    })();
+  }, []);
+
   return (
     <S.Wrapper>
       <table>
@@ -12,7 +23,6 @@ export const TransactionsTable = () => {
             <th>Data</th>
           </tr>
         </thead>
-
         <tbody>
           <tr>
             <td>Desenvolvimento de website</td>
