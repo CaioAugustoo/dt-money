@@ -1,15 +1,12 @@
 import { useEffect, useState } from "react";
+import { api } from "services/api";
 import * as S from "./styles";
 
 export const TransactionsTable = () => {
   const [, setData] = useState([]);
 
   useEffect(() => {
-    (async () => {
-      const response = await fetch("http://localhost:3000/api/transactions");
-      const json = await response.json();
-      setData(json);
-    })();
+    api.get("transactions").then(response => setData(response.data));
   }, []);
 
   return (
