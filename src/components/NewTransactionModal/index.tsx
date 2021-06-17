@@ -39,15 +39,25 @@ export function NewTransactionModal({
         <input type="number" placeholder="Valor" />
 
         <S.TransactionTypeWrapper>
-          <button type="button">
+          <S.RadioBox
+            type="button"
+            isActive={selectedType === "deposit"}
+            activeColor="green"
+            onClick={() => setSelectedType("deposit")}
+          >
             <img src={incomeImg} alt="Entrada" />
             <span>Entrada</span>
-          </button>
+          </S.RadioBox>
 
-          <button type="button">
+          <S.RadioBox
+            type="button"
+            isActive={selectedType === "withdraw"}
+            activeColor="red"
+            onClick={() => setSelectedType("withdraw")}
+          >
             <img src={outcomeImg} alt="Saída" />
             <span>Saída</span>
-          </button>
+          </S.RadioBox>
         </S.TransactionTypeWrapper>
 
         <input placeholder="Categoria" />

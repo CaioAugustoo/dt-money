@@ -1,4 +1,14 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+
+export type ButtonProps = {
+  isActive: boolean;
+  activeColor: 'green' | 'red'
+};
+
+const colors = {
+  green: '#33cc9524',
+  red: '#e52e4d26',
+}
 
 export const Wrapper = styled.form`
   h2 {
@@ -39,7 +49,7 @@ export const Wrapper = styled.form`
     font-size: 1rem;
     margin-top: 1.5rem;
 
-    transition: filter .2s;
+    transition: filter 0.2s;
 
     &:hover {
       filter: brightness(0.9);
@@ -53,18 +63,20 @@ export const TransactionTypeWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
+`;
 
-  button {
+export const RadioBox = styled.button<ButtonProps>`
+  ${({ isActive, activeColor }) => css`
     height: 4rem;
     border: 1px solid #d7d7d7d7;
     border-radius: 0.25rem;
-    background: transparent;
+    background: ${isActive ? colors[activeColor] : 'transparent'};
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    transition: border-color .2s;
+    transition: border-color 0.2s;
 
     &:hover {
       border-color: #aaaa;
@@ -81,5 +93,5 @@ export const TransactionTypeWrapper = styled.div`
       font-size: 1rem;
       color: var(--text-title);
     }
-  }
-`
+  `}
+`;
