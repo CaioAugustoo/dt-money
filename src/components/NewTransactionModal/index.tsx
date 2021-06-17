@@ -4,7 +4,7 @@ import incomeImg from "assets/income.svg";
 import outcomeImg from "assets/outcome.svg";
 
 import * as S from "./styles";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 
 export type NewTransactionModalProps = {
   isOpen: boolean;
@@ -16,6 +16,13 @@ export function NewTransactionModal({
   onRequestClose,
 }: NewTransactionModalProps) {
   const [selectedType, setSelectedType] = useState("deposit");
+  const [title, setTitle] = useState("");
+  const [value, setValue] = useState(0);
+  const [category, setCategory] = useState("");
+
+  function handleCreateNewTransaction(e: FormEvent) {
+    e.preventDefault();
+  }
 
   return (
     <Modal
@@ -32,11 +39,20 @@ export function NewTransactionModal({
         <img src={closeButton} alt="Fechar Modal" />
       </button>
 
-      <S.Wrapper>
+      <S.Wrapper onSubmit={handleCreateNewTransaction}>
         <h2>Cadastrar transação</h2>
 
-        <input placeholder="Título" />
-        <input type="number" placeholder="Valor" />
+        <input
+          placeholder="Título"
+          value={title}
+          onChange={({ target }) => setTitle(target.value)}
+        />
+        <input
+          type="number"
+          placeholder="Valor"
+          value={value}
+          onChange={({ target }) => setValue(Number(target.value))}
+        />
 
         <S.TransactionTypeWrapper>
           <S.RadioBox
@@ -60,7 +76,11 @@ export function NewTransactionModal({
           </S.RadioBox>
         </S.TransactionTypeWrapper>
 
-        <input placeholder="Categoria" />
+        <input
+          placeholder="Categoria"
+          onChange={({ target }) => setCategory(target.value)}
+          value={category}
+        />
 
         <button type="submit">Cadastrar</button>
       </S.Wrapper>
