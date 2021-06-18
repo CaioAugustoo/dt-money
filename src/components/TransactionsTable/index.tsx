@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "services/api";
+import { formatDate } from "utils/formatters/date";
+import { formatPrice } from "utils/formatters/price";
 import * as S from "./styles";
 
 export type Transaction = {
@@ -8,7 +10,7 @@ export type Transaction = {
   type: string;
   category: string;
   amount: number;
-  createdAt: string | Date;
+  createdAt: Date | number;
 };
 
 export const TransactionsTable = () => {
@@ -40,10 +42,10 @@ export const TransactionsTable = () => {
                   transaction.type === "deposit" ? "deposit" : "widthdraw"
                 }
               >
-                {transaction.amount}
+                {formatPrice(transaction.amount)}
               </td>
               <td>{transaction.category}</td>
-              <td>{transaction.createdAt}</td>
+              <td>{formatDate(transaction.createdAt)}</td>
             </tr>
           ))}
         </tbody>
