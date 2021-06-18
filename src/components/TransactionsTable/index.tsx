@@ -37,11 +37,7 @@ export const TransactionsTable = () => {
           {data.map(transaction => (
             <tr key={transaction.id}>
               <td>{transaction.title}</td>
-              <td
-                className={
-                  transaction.type === "deposit" ? "deposit" : "widthdraw"
-                }
-              >
+              <td className={transaction.type}>
                 {formatPrice(transaction.amount)}
               </td>
               <td>{transaction.category}</td>
