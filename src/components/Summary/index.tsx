@@ -3,8 +3,12 @@ import * as S from "./styles";
 import income from "assets/income.svg";
 import outcome from "assets/outcome.svg";
 import total from "assets/total.svg";
+import { useContext } from "react";
+import TransactionsContext from "TransactionsContext";
 
 export const Summary = () => {
+  const data = useContext(TransactionsContext);
+
   return (
     <S.Wrapper>
       <div>
