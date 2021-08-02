@@ -5,7 +5,7 @@ import outcomeImg from "assets/outcome.svg";
 
 import * as S from "./styles";
 import { FormEvent, useState } from "react";
-import { api } from "services/api";
+import { base_url } from "services/api";
 
 export type NewTransactionModalProps = {
   isOpen: boolean;
@@ -19,19 +19,25 @@ export function NewTransactionModal({
   const [type, setType] = useState("deposit");
   const [title, setTitle] = useState("");
   const [value, setValue] = useState(0);
-  const [category, setCategory] = useState("");
 
-  function handleCreateNewTransaction(e: FormEvent) {
+  async function handleCreateNewTransaction(e: FormEvent) {
     e.preventDefault();
 
     const data = {
-      title,
-      value,
-      category,
-      type,
+      description: title,
+      amount: value,
     };
 
-    api.post("/transactions", data);
+    await fetch(`${base_url}/deposit`, {
+      // Hardcode just for tests.
+      // The backend should have an account with cpf equals "99999999"
+      headers: {
+        cpf: "99999999",
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify(data),
+    });
   }
 
   return (
@@ -53,11 +59,13 @@ export function NewTransactionModal({
         <h2>Cadastrar transação</h2>
 
         <input
+          required
           placeholder="Título"
           value={title}
           onChange={({ target }) => setTitle(target.value)}
         />
         <input
+          required
           type="number"
           placeholder="Valor"
           value={value}
@@ -85,12 +93,6 @@ export function NewTransactionModal({
             <span>Saída</span>
           </S.RadioBox>
         </S.TransactionTypeWrapper>
-
-        <input
-          placeholder="Categoria"
-          onChange={({ target }) => setCategory(target.value)}
-          value={category}
-        />
 
         <button type="submit">Cadastrar</button>
       </S.Wrapper>

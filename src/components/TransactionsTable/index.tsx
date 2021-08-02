@@ -1,25 +1,36 @@
 import { useEffect, useState } from "react";
-import { api } from "services/api";
+
+import { base_url } from "services/api";
+
 import { formatDate } from "utils/formatters/date";
 import { formatPrice } from "utils/formatters/price";
+
 import * as S from "./styles";
 
 export type Transaction = {
-  id: number;
-  title: string;
+  id: string;
+  description: string;
   type: string;
-  category: string;
   amount: number;
-  createdAt: Date | number;
+  created_at: Date | number;
 };
 
 export const TransactionsTable = () => {
   const [data, setData] = useState<Transaction[]>([]);
 
   useEffect(() => {
-    api
-      .get("transactions")
-      .then(response => setData(response.data.transactions));
+    const getData = async () => {
+      const res = await fetch(`${base_url}/statements`, {
+        // Hardcode just for tests.
+        // The backend should have an account with cpf equals "99999999"
+        headers: {
+          cpf: "99999999",
+        },
+      });
+      const json = await res.json();
+      setData(json.data);
+    };
+    getData();
   }, []);
 
   return (
@@ -29,19 +40,17 @@ export const TransactionsTable = () => {
           <tr>
             <th>Título</th>
             <th>Valor</th>
-            <th>Categoria</th>
             <th>Data</th>
           </tr>
         </thead>
         <tbody>
-          {data.map(transaction => (
+          {data?.map(transaction => (
             <tr key={transaction.id}>
-              <td>{transaction.title}</td>
+              <td>{transaction.description}</td>
               <td className={transaction.type}>
-                {formatPrice(transaction.amount)}
+                {formatPrice(transaction?.amount)}
               </td>
-              <td>{transaction.category}</td>
-              <td>{formatDate(transaction.createdAt)}</td>
+              <td>{formatDate(transaction.created_at)}</td>
             </tr>
           ))}
         </tbody>
