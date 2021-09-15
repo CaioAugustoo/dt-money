@@ -40,8 +40,13 @@ export function NewTransactionModal({
       createdAt: new Date(),
     };
 
-    createTransaction(data);
+    await createTransaction(data);
     onRequestClose();
+
+    setTitle("");
+    setType("deposit");
+    setCategory("");
+    setValue(0);
   }
 
   return (
