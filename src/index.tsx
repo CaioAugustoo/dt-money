@@ -22,7 +22,7 @@ createServer({
         {
           id: 2,
           title: "Freelancer de website",
-          type: "deposit",
+          type: "withdraw",
           category: "Desenvolvimento",
           amount: 5300,
           createdAt: new Date("2021-06-16 09:09:00"),
