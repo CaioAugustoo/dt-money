@@ -5,7 +5,7 @@ import outcomeImg from "assets/outcome.svg";
 
 import * as S from "./styles";
 import { FormEvent, useState } from "react";
-import { base_url } from "services/api";
+import { api } from "services/api";
 
 export type NewTransactionModalProps = {
   isOpen: boolean;
@@ -26,18 +26,10 @@ export function NewTransactionModal({
     const data = {
       description: title,
       amount: value,
+      type,
     };
 
-    await fetch(`${base_url}/deposit`, {
-      // Hardcode just for tests.
-      // The backend should have an account with cpf equals "99999999"
-      headers: {
-        cpf: "99999999",
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify(data),
-    });
+    api.post("/statements", data);
   }
 
   return (
