@@ -1,11 +1,16 @@
+import { FormEvent, useState } from "react";
+
 import Modal from "react-modal";
+
+import { useTransactions } from "hooks/useTransactions";
+
+import { v4 as id } from "uuid";
+
 import closeButton from "assets/close.svg";
 import incomeImg from "assets/income.svg";
 import outcomeImg from "assets/outcome.svg";
 
 import * as S from "./styles";
-import { FormEvent, useState } from "react";
-import { api } from "services/api";
 
 export type NewTransactionModalProps = {
   isOpen: boolean;
@@ -16,20 +21,27 @@ export function NewTransactionModal({
   isOpen,
   onRequestClose,
 }: NewTransactionModalProps) {
-  const [type, setType] = useState("deposit");
+  const { createTransaction } = useTransactions();
   const [title, setTitle] = useState("");
+  const [type, setType] = useState("deposit");
+  const [category, setCategory] = useState("");
   const [value, setValue] = useState(0);
 
   async function handleCreateNewTransaction(e: FormEvent) {
     e.preventDefault();
 
     const data = {
+      id: id(),
+      title,
       description: title,
       amount: value,
       type,
+      category,
+      createdAt: new Date(),
     };
 
-    api.post("/statements", data);
+    createTransaction(data);
+    onRequestClose();
   }
 
   return (
@@ -62,6 +74,13 @@ export function NewTransactionModal({
           placeholder="Valor"
           value={value}
           onChange={({ target }) => setValue(Number(target.value))}
+        />
+        <input
+          required
+          type="text"
+          placeholder="Categoria"
+          value={category}
+          onChange={({ target }) => setCategory(target.value)}
         />
 
         <S.TransactionTypeWrapper>
